@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <cstring>
 #include <iostream>
 #include "VendingMachine.h"
 
@@ -10,14 +12,14 @@ namespace sdds
 
    VendingMachine::VendingMachine(const VendingMachine& vm)
    {
-
+      *this = vm;
    }
 
    VendingMachine& VendingMachine::operator=(const VendingMachine& vm)
    {
       return *this;
    }
-                                  // e.g., 8 slots
+   // e.g., 8 slots
    VendingMachine::VendingMachine(Soda* sodas, int numSodas)
    {
       bool exists{};
@@ -30,20 +32,22 @@ namespace sdds
       Soda* tempSodas = sodas;
       //std::cout << tempSodas << std::endl;
       //std::cout << sodas << std::endl;
-      
+
 
       if (m_maxSlots > 0 && sodas && numSodas > 0)
       {
          if (sodas)
          {
-
             for (int i = 0; i < numSodas; ++i)
             {
-               // Makes a call to the += operator for the Vending machine.
-               // The += operator will:
-               // - add a soda to a slot under these connections
-               //   > 
-                *this += sodas[i];
+               *this += sodas[i];
+            }
+
+            std::cout << m_maxSlots << std::endl;
+            std::cout << m_currentSlotsFilled;
+            for (int i = 0; i < m_currentSlotsFilled; i++)
+            {
+               std::cout << m_sodaCells[i].getName() << std::endl; 
             }
 
             //for (int i = 0; i < numSodas; i++)
@@ -68,8 +72,8 @@ namespace sdds
             //m_sodaCells = new Soda[newSodaCounter];
 
 
-         } 
-       
+         }
+
       }
    }
 
@@ -145,15 +149,21 @@ namespace sdds
       {
          if (m_currentSlotsFilled)
          {
-
+            //&& std::strcmp(m_sodaCells[i].getName(), soda.getName()) == 0
             for (int i = 0; i < m_currentSlotsFilled && !canAdd; i++)
             {
-               if (m_sodaCells && std::strcmp(m_sodaCells[i].getName(), soda.getName()) == 0)
+               if (m_sodaCells)
                {
-                  if (m_sodasInCell[i] < MAX_SODAS)
+                  if (m_sodaCells[i].getName() && m_sodaCells[i].getName()[0])
                   {
-                     canAdd = true;
-                     m_sodasInCell[i] += 1;
+                     if (std::strcmp(m_sodaCells[i].getName(), soda.getName()) == 0)
+                     {
+                        if (m_sodasInCell[i] < MAX_SODAS)
+                        {
+                           canAdd = true;
+                           m_sodasInCell[i] += 1;
+                        }
+                     }
                   }
                }
             }
@@ -161,14 +171,24 @@ namespace sdds
             if (!canAdd && m_currentSlotsFilled < m_maxSlots)
             {
                Soda* tempSodas = new Soda[m_currentSlotsFilled + 1];
-               for (int i = 0; i < m_currentSlotsFilled; i++)
+               for (int i = 0; i < m_currentSlotsFilled && m_sodaCells; i++)
                {
                   tempSodas[i] = m_sodaCells[i];
                }
 
                tempSodas[m_currentSlotsFilled] = soda;
                m_currentSlotsFilled++;
-               m_sodasInCell[m_currentSlotsFilled] += 1;
+
+               int* tempSodasInCell = new int[m_currentSlotsFilled + 1];
+               for (int i = 0; i < m_currentSlotsFilled && m_sodaCells; i++)
+               {
+                  tempSodasInCell[i] = m_sodasInCell[i];
+               }
+
+               tempSodasInCell[m_currentSlotsFilled] = 1;
+
+               delete[] m_sodasInCell;
+               m_sodasInCell = tempSodasInCell;
 
             }
          }
@@ -188,7 +208,10 @@ namespace sdds
 
 
             m_sodasInCell = new int[m_currentSlotsFilled + 1];
-            m_sodasInCell[m_currentSlotsFilled] += 1;
+                       
+            if (m_sodasInCell){
+               m_sodasInCell[m_currentSlotsFilled] = 1;
+            }
          }
       }
 
