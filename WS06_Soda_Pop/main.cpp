@@ -3,6 +3,7 @@
 #include <fstream>
 #include "soda.h"
 #include "soda.h" // Intentional - test for header guards
+#include "VendingMachine.h"
 
 void printBanner(const char* msg, char c, int len)
 {
@@ -22,6 +23,12 @@ void printBanner(const char* msg, char c, int len)
       std::cout << c;
    }
    std::cout << std::endl;
+}
+
+void printReport(std::ostream& os = std::cout){
+   os << "-------------------------------------------------\n";
+   os << "| Soda Name     | Volume (mL)       | Price ($)  \n";
+   os << "-------------------------------------------------\n";
 }
 
 
@@ -101,7 +108,9 @@ int main()
    test4();
 
    // Test vending machine logic
-   sdds::Soda s1;
+   sdds::Soda* sodas{};
+   std::streampos beg{};
+   int recCount{};
 
    // Test
    std::ifstream sodaFile("sodas.txt");
@@ -109,9 +118,46 @@ int main()
    
    // 
    std::cout << "Reading sodas.txt\n";
-   sodaFile >> s1;
-   s1.display();
 
+   char line[99 + 1]{};
+
+   // PW: 
+   // store init pos of the file cursor    
+   //beg = sodaFile.tellg();
+
+   while (sodaFile.getline(line, 99 + 1, '\n'))
+   {
+      recCount++;
+   };
+
+   // PW: 
+   sodaFile.clear();
+   sodaFile.seekg(0);
+   //sodaFile.seekg(beg);
+
+   sodas = new sdds::Soda[recCount];
+
+   // Read and then display
+
+   printReport(std::cout);
+
+   for (int i = 0; i < recCount && sodaFile; i++)
+   {
+      sodaFile >> sodas[i];
+      sodas[i].display();
+   }
+   std::cout << std::endl;
+   // Write to the file
+
+   printReport(updatedSodas);
+   for (int i = 0; i < recCount; i++)
+   {
+      updatedSodas << sodas[i];
+   }
+   std::cout << std::endl;
+
+   sdds::VendingMachine vm;
+   
 
    return 0;
 }

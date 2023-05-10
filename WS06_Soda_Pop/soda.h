@@ -8,6 +8,7 @@ namespace sdds
       int m_mL{};
       double m_price{};
       char* m_name{};
+      bool m_duplicate{};
    public:
       Soda(int mL, double price, const char* name = nullptr); // How many signatures do we have?
       Soda() = default;
@@ -17,6 +18,11 @@ namespace sdds
       Soda& set(double price);
       Soda& set(const char* name);
       Soda& set(int ml, double price, const char* name);
+
+      int getVol()const;
+      double getPrice()const;
+      const char* getName()const;
+
       Soda& setEmpty();
       std::ostream& display(std::ostream& os = std::cout)const;
       std::istream& read(std::istream& is = std::cin);

@@ -24,6 +24,7 @@ namespace sdds
    {
       // Reusing the copy assignment operator's logic.
       *this = soda;
+      m_duplicate = true;
    }
 
    Soda& Soda::operator=(const Soda& soda)
@@ -53,7 +54,6 @@ namespace sdds
          ******************************************/
          m_mL = soda.m_mL;
          m_price = soda.m_price;
-
       }
 
       return *this;
@@ -112,6 +112,21 @@ namespace sdds
       return *this;
    }
 
+   int Soda::getVol() const
+   {
+      return m_mL;
+   }
+
+   double Soda::getPrice() const
+   {
+      return m_price;
+   }
+
+   const char* Soda::getName() const
+   {
+      return m_name && m_name[0] ? m_name : nullptr;
+   }
+
    Soda& Soda::setEmpty()
    {
       if (m_name)
@@ -129,19 +144,15 @@ namespace sdds
    std::ostream& Soda::display(std::ostream& os) const
    {
       if (*this)
-      {
-         os << "-------------------------------------------------\n";
-         os << "| Soda Name    | Volume (mL)       | Price       \n";
-         os << "-------------------------------------------------\n";
-
-         os << '|' << std::setw(14) << m_name
-            << '|' << std::setw(19) << m_mL
-            << '|' << std::setw(13) << m_price << std::endl;
+      {                                                                
+         os << "| " << std::left << std::setw(14) << m_name
+            << '|' << std::setw(18) << std::right << m_mL 
+            << " |" << std::right << std::setw(11) << std::fixed << std::setprecision(2) << m_price << std::endl;
          os << "-------------------------------------------------\n";
       }
       else
       {
-         os << "Invalid Soda Details! Set the Soda object.\n";
+         os << "ERROR: Invalid Soda Details! Set the Soda object.\n";
       }
 
 
