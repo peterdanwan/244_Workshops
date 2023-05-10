@@ -101,63 +101,70 @@ void test4() {
 
 int main()
 {
-   // Test soda logic
-   test1();
-   test2();
-   test3();
-   test4();
+   //// Test soda logic
+   //test1();
+   //test2();
+   //test3();
+   //test4();
 
-   // Test vending machine logic
-   sdds::Soda* sodas{};
-   std::streampos beg{};
-   int recCount{};
+   //// Test vending machine logic
+   //sdds::Soda* sodas{};
+   //std::streampos beg{};
+   //int recCount{};
 
-   // Test
-   std::ifstream sodaFile("sodas.txt");
-   std::ofstream updatedSodas("updatedSodas.txt");
+   //// Test
+   //std::ifstream sodaFile("sodas.txt");
+   //std::ofstream updatedSodas("updatedSodas.txt");
+   //
+   //// 
+   //std::cout << "Reading sodas.txt\n";
+
+   //char line[99 + 1]{};
+
+   //// PW: 
+   //// store init pos of the file cursor    
+   ////beg = sodaFile.tellg();
+
+   //while (sodaFile.getline(line, 99 + 1, '\n'))
+   //{
+   //   recCount++;
+   //};
+
+   //// PW: 
+   //sodaFile.clear();
+   //sodaFile.seekg(0);
+   ////sodaFile.seekg(beg);
+
+   //sodas = new sdds::Soda[recCount];
+
+   //// Read and then display
+
+   //printReport(std::cout);
+
+   //for (int i = 0; i < recCount && sodaFile; i++)
+   //{
+   //   sodaFile >> sodas[i];
+   //   sodas[i].display();
+   //}
+   //std::cout << std::endl;
+   //// Write to the file
+
+   //printReport(updatedSodas);
+   //for (int i = 0; i < recCount; i++)
+   //{
+   //   updatedSodas << sodas[i];
+   //}
+   //std::cout << std::endl;
+
    
-   // 
-   std::cout << "Reading sodas.txt\n";
-
-   char line[99 + 1]{};
-
-   // PW: 
-   // store init pos of the file cursor    
-   //beg = sodaFile.tellg();
-
-   while (sodaFile.getline(line, 99 + 1, '\n'))
-   {
-      recCount++;
+   sdds::Soda sodas[]{
+      {255, 1.50, "Coke"},
+      {255, 2.00, "Cream Soda"},
+      {255, 1.50, "Mountain Dew"}
    };
 
-   // PW: 
-   sodaFile.clear();
-   sodaFile.seekg(0);
-   //sodaFile.seekg(beg);
+   sdds::VendingMachine vm(3, 3, sodas, 3);
 
-   sodas = new sdds::Soda[recCount];
-
-   // Read and then display
-
-   printReport(std::cout);
-
-   for (int i = 0; i < recCount && sodaFile; i++)
-   {
-      sodaFile >> sodas[i];
-      sodas[i].display();
-   }
-   std::cout << std::endl;
-   // Write to the file
-
-   printReport(updatedSodas);
-   for (int i = 0; i < recCount; i++)
-   {
-      updatedSodas << sodas[i];
-   }
-   std::cout << std::endl;
-
-   sdds::VendingMachine vm;
-   
 
    return 0;
 }
