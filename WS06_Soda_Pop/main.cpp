@@ -159,11 +159,12 @@ int main()
    
    sdds::Soda sodas[]{
       {255, 1.50, "Coke"},
-      {255, 2.00, "Cream Soda"},
-      {255, 1.50, "Mountain Dew"}
+      {255, 1.50, "Cream Soda"},
+      {255, 1.50, "Mountain Dew"},
+      {255, 1.50, "Cream Soda"}
    };
 
-   sdds::VendingMachine vm(3, 3, sodas, 3);
+   sdds::VendingMachine vm(sodas, 4);
 
 
    return 0;

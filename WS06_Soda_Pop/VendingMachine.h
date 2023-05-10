@@ -6,23 +6,25 @@
 namespace sdds 
 {
     const int extern MAX_SODAS;
+    const int extern VEND_ROW_LEN;  
+    const int extern VEND_COL_LEN;
 
     class VendingMachine
     {
        int m_maxSlots{};  // A1 A2 A3 A4
                               // B1 B2 B3
 
-       int* m_sodasPerCell{}; // all cells can hold up to 5 sodas 
 
        int m_currentSlotsFilled{};
                              
-       // m_sodasPerCell[0] == A1; // can range from 0-5;
-       // m_sodasPerCell[1] == A2; // can range from 0-5;
-       Soda* m_sodas{}; //Soda m_sodas[7];
+       // m_sodasInCell[0] == A1; // can range from 0-5;
+       // m_sodasInCell[1] == A2; // can range from 0-5;
+       Soda* m_sodaCells{}; //Soda m_sodaCells[7];
+       int* m_sodasInCell{}; // all cells can hold up to 5 sodas 
     public:
        VendingMachine() = default;
  
-       VendingMachine(int maxSlots, int sodasPerCell, Soda* sodas, int numSodas);
+       VendingMachine(Soda* sodas, int numSodas);
        VendingMachine(const VendingMachine& vm);
        VendingMachine& operator=(const VendingMachine& vm);
        VendingMachine& sort(bool ascending);
