@@ -177,7 +177,6 @@ namespace sdds
                }
 
                tempSodas[m_currentSlotsFilled] = soda;
-               m_currentSlotsFilled++;
 
                int* tempSodasInCell = new int[m_currentSlotsFilled + 1];
                for (int i = 0; i < m_currentSlotsFilled && m_sodaCells; i++)
@@ -186,6 +185,7 @@ namespace sdds
                }
 
                tempSodasInCell[m_currentSlotsFilled] = 1;
+               m_currentSlotsFilled++;
 
                delete[] m_sodasInCell;
                m_sodasInCell = tempSodasInCell;
@@ -200,18 +200,21 @@ namespace sdds
             // tempSodas[0] = incSoda obj
             tempSodas[m_currentSlotsFilled] = soda;
 
-            // increment slots
-            m_currentSlotsFilled++;
-
             // Have the member variable point to the same area tempSodas is pointing to
             m_sodaCells = tempSodas;
 
-
+            // Switched this to be above the incrementing part
             m_sodasInCell = new int[m_currentSlotsFilled + 1];
-                       
-            if (m_sodasInCell){
+
+            // Initialize the new slot to have a count of 1
+            if (m_sodasInCell)
+            {
                m_sodasInCell[m_currentSlotsFilled] = 1;
             }
+
+            // increment slots
+            m_currentSlotsFilled++;
+
          }
       }
 
