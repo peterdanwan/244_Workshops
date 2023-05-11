@@ -28,7 +28,7 @@ namespace sdds
          // Deep copy of resources
          //// Resize m_sodaCells
          m_sodaCells = new Soda[vm.m_currentSlotsFilled];
-         
+
          for (int i = 0; i < vm.m_currentSlotsFilled; i++)
          {
             m_sodaCells[i] = vm.m_sodaCells[i];
@@ -69,7 +69,7 @@ namespace sdds
             std::cout << m_currentSlotsFilled << std::endl;
             for (int i = 0; i < m_currentSlotsFilled; i++)
             {
-               std::cout << m_sodaCells[i].getName() << std::endl; 
+               std::cout << m_sodaCells[i].getName() << std::endl;
             }
          }
 
@@ -145,81 +145,81 @@ namespace sdds
 
       if (soda)
       {
-         if (m_currentSlotsFilled)
-         {
+         //if (m_currentSlotsFilled)
+         //{
             //&& std::strcmp(m_sodaCells[i].getName(), soda.getName()) == 0
-            for (int i = 0; i < m_currentSlotsFilled && !canAdd; i++)
+         for (int i = 0; i < m_currentSlotsFilled && !canAdd; i++)
+         {
+            if (m_sodaCells)
             {
-               if (m_sodaCells)
+               if (m_sodaCells[i].getName() && m_sodaCells[i].getName()[0])
                {
-                  if (m_sodaCells[i].getName() && m_sodaCells[i].getName()[0])
+                  if (std::strcmp(m_sodaCells[i].getName(), soda.getName()) == 0)
                   {
-                     if (std::strcmp(m_sodaCells[i].getName(), soda.getName()) == 0)
+                     if (m_sodasInCell[i] < MAX_SODAS)
                      {
-                        if (m_sodasInCell[i] < MAX_SODAS)
-                        {
-                           canAdd = true;
-                           m_sodasInCell[i] += 1;
-                        }
+                        canAdd = true;
+                        m_sodasInCell[i] += 1;
                      }
                   }
                }
             }
-
-            if (!canAdd && m_currentSlotsFilled < m_maxSlots)
-            {
-               Soda* tempSodas = new Soda[m_currentSlotsFilled + 1];
-               for (int i = 0; i < m_currentSlotsFilled && m_sodaCells; i++)
-               {
-                  tempSodas[i] = m_sodaCells[i];
-               }
-
-               tempSodas[m_currentSlotsFilled] = soda;
-
-               if (m_sodaCells)
-               {
-                  delete[] m_sodaCells;
-               }
-               m_sodaCells = tempSodas;
-
-               int* tempSodasInCell = new int[m_currentSlotsFilled + 1];
-               for (int i = 0; i < m_currentSlotsFilled && m_sodasInCell; i++)
-               {
-                  tempSodasInCell[i] = m_sodasInCell[i];
-               }
-
-               tempSodasInCell[m_currentSlotsFilled] = 1;
-               m_currentSlotsFilled++;
-
-               delete[] m_sodasInCell;
-               m_sodasInCell = tempSodasInCell;
-
-            }
          }
-         else
+
+         if (!canAdd && m_currentSlotsFilled < m_maxSlots)
          {
-            // Size the temp soda array
-            Soda* tempSodas = new Soda[1]; // m_currentSlotsFilled + 1
+            Soda* tempSodas = new Soda[m_currentSlotsFilled + 1];
+            for (int i = 0; i < m_currentSlotsFilled && m_sodaCells; i++)
+            {
+               tempSodas[i] = m_sodaCells[i];
+            }
 
-            // tempSodas[0] = incSoda obj
-            tempSodas[0] = soda;
+            tempSodas[m_currentSlotsFilled] = soda;
 
-            // Have the member variable point to the same area tempSodas is pointing to
+            if (m_sodaCells)
+            {
+               delete[] m_sodaCells;
+            }
             m_sodaCells = tempSodas;
 
-            // Switched this to be above the incrementing part
-            m_sodasInCell = new int[1];
-
-            // Initialize the new slot to have a count of 1
-            if (m_sodasInCell)
+            int* tempSodasInCell = new int[m_currentSlotsFilled + 1];
+            for (int i = 0; i < m_currentSlotsFilled && m_sodasInCell; i++)
             {
-               m_sodasInCell[0] = 1;
+               tempSodasInCell[i] = m_sodasInCell[i];
             }
 
-            // increment slots
+            tempSodasInCell[m_currentSlotsFilled] = 1;
             m_currentSlotsFilled++;
 
+            delete[] m_sodasInCell;
+            m_sodasInCell = tempSodasInCell;
+
          }
+         //}
+         //else
+         //{
+         //   // Size the temp soda array
+         //   Soda* tempSodas = new Soda[1]; // m_currentSlotsFilled + 1
+
+         //   // tempSodas[0] = incSoda obj
+         //   tempSodas[0] = soda;
+
+         //   // Have the member variable point to the same area tempSodas is pointing to
+         //   m_sodaCells = tempSodas;
+
+         //   // Switched this to be above the incrementing part
+         //   m_sodasInCell = new int[1];
+
+         //   // Initialize the new slot to have a count of 1
+         //   if (m_sodasInCell)
+         //   {
+         //      m_sodasInCell[0] = 1;
+         //   }
+
+         //   // increment slots
+         //   m_currentSlotsFilled++;
+
+         //}
       }
 
       return *this;
