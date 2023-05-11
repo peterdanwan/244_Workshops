@@ -17,61 +17,60 @@ namespace sdds
 
    VendingMachine& VendingMachine::operator=(const VendingMachine& vm)
    {
+      if (this != &vm)
+      {
+         // Clear current object's dynamic memory
+         delete[] m_sodaCells;
+         m_sodaCells = nullptr;
+         delete[] m_sodasInCell;
+         m_sodasInCell = nullptr;
+
+         // Deep copy of resources
+         //// Resize m_sodaCells
+         m_sodaCells = new Soda[vm.m_currentSlotsFilled];
+         
+         for (int i = 0; i < vm.m_currentSlotsFilled; i++)
+         {
+            m_sodaCells[i] = vm.m_sodaCells[i];
+         }
+
+         m_sodasInCell = new int[vm.m_currentSlotsFilled];
+         for (int i = 0; i < vm.m_currentSlotsFilled; i++)
+         {
+            m_sodasInCell[i] = vm.m_sodasInCell[i];
+         }
+
+         // Shallow copy of resources
+         m_maxSlots = vm.m_maxSlots;
+         m_currentSlotsFilled = vm.m_currentSlotsFilled;
+
+      }
+
+
       return *this;
    }
    // e.g., 8 slots
-   VendingMachine::VendingMachine(Soda* sodas, int numSodas)
+   VendingMachine::VendingMachine(const Soda* sodas, int numSodas)
    {
-      bool exists{};
-      int index{};
-      int newSodaCounter{};
-      int duplicate{};
-
+      // do we need this anymore 
       m_maxSlots = VEND_COL_LEN * VEND_ROW_LEN;
-
-      Soda* tempSodas = sodas;
-      //std::cout << tempSodas << std::endl;
-      //std::cout << sodas << std::endl;
-
 
       if (m_maxSlots > 0 && sodas && numSodas > 0)
       {
          if (sodas)
          {
+
             for (int i = 0; i < numSodas; ++i)
             {
                *this += sodas[i];
             }
 
             std::cout << m_maxSlots << std::endl;
-            std::cout << m_currentSlotsFilled;
+            std::cout << m_currentSlotsFilled << std::endl;
             for (int i = 0; i < m_currentSlotsFilled; i++)
             {
                std::cout << m_sodaCells[i].getName() << std::endl; 
             }
-
-            //for (int i = 0; i < numSodas; i++)
-            //{
-            //   int existCounter{};
-
-            //   for (int j = 0; j < numSodas; j++)
-            //   {
-            //      if (std::strcmp(sodas[i].getName(), tempSodas[j].getName()) == 0)
-            //      {
-            //         existCounter++;
-            //      }
-            //   }
-
-            //   if (existCounter == 1) //0
-            //   {
-            //      newSodaCounter++; // duplicate doesn't tell us which duplicate it's for
-
-            //   }
-            //}
-
-            //m_sodaCells = new Soda[newSodaCounter];
-
-
          }
 
       }
@@ -111,7 +110,6 @@ namespace sdds
          }
       }
 
-
       return *this;
    }
 
@@ -144,7 +142,7 @@ namespace sdds
       //   - in the event that there are no available spaces, the sodas won't be added.
 
       bool canAdd{};
-      int index{};
+
       if (soda)
       {
          if (m_currentSlotsFilled)
@@ -178,8 +176,14 @@ namespace sdds
 
                tempSodas[m_currentSlotsFilled] = soda;
 
+               if (m_sodaCells)
+               {
+                  delete[] m_sodaCells;
+               }
+               m_sodaCells = tempSodas;
+
                int* tempSodasInCell = new int[m_currentSlotsFilled + 1];
-               for (int i = 0; i < m_currentSlotsFilled && m_sodaCells; i++)
+               for (int i = 0; i < m_currentSlotsFilled && m_sodasInCell; i++)
                {
                   tempSodasInCell[i] = m_sodasInCell[i];
                }
@@ -195,21 +199,21 @@ namespace sdds
          else
          {
             // Size the temp soda array
-            Soda* tempSodas = new Soda[m_currentSlotsFilled + 1];
+            Soda* tempSodas = new Soda[1]; // m_currentSlotsFilled + 1
 
             // tempSodas[0] = incSoda obj
-            tempSodas[m_currentSlotsFilled] = soda;
+            tempSodas[0] = soda;
 
             // Have the member variable point to the same area tempSodas is pointing to
             m_sodaCells = tempSodas;
 
             // Switched this to be above the incrementing part
-            m_sodasInCell = new int[m_currentSlotsFilled + 1];
+            m_sodasInCell = new int[1];
 
             // Initialize the new slot to have a count of 1
             if (m_sodasInCell)
             {
-               m_sodasInCell[m_currentSlotsFilled] = 1;
+               m_sodasInCell[0] = 1;
             }
 
             // increment slots
@@ -229,5 +233,11 @@ namespace sdds
       }
 
       return os;
+   }
+
+   VendingMachine::~VendingMachine()
+   {
+      delete[] m_sodaCells;
+      delete[] m_sodasInCell;
    }
 }

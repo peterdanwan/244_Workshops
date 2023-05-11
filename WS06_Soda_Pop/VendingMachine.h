@@ -24,7 +24,7 @@ namespace sdds
     public:
        VendingMachine() = default;
  
-       VendingMachine(Soda* sodas, int numSodas);
+       VendingMachine(const Soda* sodas, int numSodas);
        VendingMachine(const VendingMachine& vm);
        VendingMachine& operator=(const VendingMachine& vm);
        VendingMachine& sort(bool ascending);
@@ -34,6 +34,7 @@ namespace sdds
        VendingMachine& operator+=(const Soda& soda);
        std::ostream& display(std::ostream& os = std::cout)const;
 
+       virtual ~VendingMachine();
     };
 }
 #endif

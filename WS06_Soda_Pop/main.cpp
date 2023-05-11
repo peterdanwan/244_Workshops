@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <cstring>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -7,7 +9,7 @@
 
 void printBanner(const char* msg, char c, int len)
 {
-   if (len < std::strlen(msg))
+   if (len < int(std::strlen(msg)))
    {
       len = std::strlen(msg);
    }
@@ -101,71 +103,71 @@ void test4() {
 
 int main()
 {
-   //// Test soda logic
-   //test1();
-   //test2();
-   //test3();
-   //test4();
+   // Test soda logic
+   test1();
+   test2();
+   test3();
+   test4();
 
-   //// Test vending machine logic
-   //sdds::Soda* sodas{};
-   //std::streampos beg{};
-   //int recCount{};
+   // Test vending machine logic
+   sdds::Soda* sodas{};
+   std::streampos beg{};
+   int recCount{};
 
-   //// Test
-   //std::ifstream sodaFile("sodas.txt");
-   //std::ofstream updatedSodas("updatedSodas.txt");
-   //
-   //// 
-   //std::cout << "Reading sodas.txt\n";
-
-   //char line[99 + 1]{};
-
-   //// PW: 
-   //// store init pos of the file cursor    
-   ////beg = sodaFile.tellg();
-
-   //while (sodaFile.getline(line, 99 + 1, '\n'))
-   //{
-   //   recCount++;
-   //};
-
-   //// PW: 
-   //sodaFile.clear();
-   //sodaFile.seekg(0);
-   ////sodaFile.seekg(beg);
-
-   //sodas = new sdds::Soda[recCount];
-
-   //// Read and then display
-
-   //printReport(std::cout);
-
-   //for (int i = 0; i < recCount && sodaFile; i++)
-   //{
-   //   sodaFile >> sodas[i];
-   //   sodas[i].display();
-   //}
-   //std::cout << std::endl;
-   //// Write to the file
-
-   //printReport(updatedSodas);
-   //for (int i = 0; i < recCount; i++)
-   //{
-   //   updatedSodas << sodas[i];
-   //}
-   //std::cout << std::endl;
-
+   // Test
+   std::ifstream sodaFile("sodas.txt");
+   std::ofstream updatedSodas("updatedSodas.txt");
    
-   sdds::Soda sodas[]{
-      {255, 1.50, "Coke"},
-      {255, 1.50, "Cream Soda"},
-      {255, 1.50, "Mountain Dew"},
-      {255, 1.50, "Cream Soda"}
+   // 
+   std::cout << "Reading sodas.txt\n";
+
+   char line[99 + 1]{};
+
+   // PW: 
+   // store init pos of the file cursor    
+   //beg = sodaFile.tellg();
+
+   while (sodaFile.getline(line, 99 + 1, '\n'))
+   {
+      recCount++;
    };
 
-   sdds::VendingMachine vm(sodas, 4);
+   // PW: 
+   sodaFile.clear();
+   sodaFile.seekg(0);
+   //sodaFile.seekg(beg);
 
+   sodas = new sdds::Soda[recCount];
+
+   // Read and then display
+
+   printReport(std::cout);
+
+   for (int i = 0; i < recCount && sodaFile; i++)
+   {
+      sodaFile >> sodas[i];
+      sodas[i].display();
+   }
+   std::cout << std::endl;
+   // Write to the file
+
+   printReport(updatedSodas);
+   for (int i = 0; i < recCount; i++)
+   {
+      updatedSodas << sodas[i];
+   }
+   std::cout << std::endl;
+
+   {
+      sdds::Soda sodas[]{
+         {255, 1.50, "Coke"},
+         {255, 1.50, "Cream Soda"},
+         {255, 1.50, "Mountain Dew"},
+         {255, 1.50, "Cream Soda"}
+      };
+
+      sdds::VendingMachine vm(sodas, 4);
+   }
 
    return 0;
 }
